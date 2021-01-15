@@ -24,6 +24,20 @@ func QueryUserByName(name string) (u User) {
 	return
 }
 
+func QueryUser(data map[string]int) (users []User) {
+	pageNo := 1
+	pageSize := 20
+	if data["pageNo"] != 0 {
+		pageNo = data["pageNo"]
+	}
+	if data["pageSize"] != 0 {
+		pageSize = data["pageSize"]
+	}
+	offset := (pageNo - 1) * pageSize
+	db.Offset(offset).Limit(pageSize).Find(&users)
+	return
+}
+
 func (u User) Insert() uint {
 	result := db.Create(&u)
 	if result.Error != nil {

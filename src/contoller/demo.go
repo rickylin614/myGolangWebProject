@@ -12,11 +12,10 @@ const (
 )
 
 func LinkCheck(ctx *gin.Context) {
-	data := map[string]string{
+	ctx.JSON(http.StatusOK, gin.H{
 		"msg":  "link success!",
 		"code": Suc,
-	}
-	ctx.JSON(http.StatusOK, data)
+	})
 }
 
 func NoSetting(ctx *gin.Context) {
@@ -24,5 +23,5 @@ func NoSetting(ctx *gin.Context) {
 		"msg":  "undefined path!",
 		"code": Err,
 	}
-	ctx.JSON(http.StatusMethodNotAllowed, data)
+	ctx.JSON(http.StatusNotFound, data)
 }
