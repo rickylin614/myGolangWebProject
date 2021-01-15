@@ -11,6 +11,6 @@ type User struct {
 	Name      string
 	Pwd       string
 	SessionId string
-	LoginTime time.Time `gorm:"type:time"`
+	LoginTime *time.Time `gorm:"type:time"`
 	gorm.Model
 }

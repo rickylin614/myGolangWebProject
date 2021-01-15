@@ -1,13 +1,11 @@
 package dao
 
 import (
-	"time"
-
 	"orderbento/src/models"
+	"time"
 )
 
 // type User struct {
-// 	// Id        int64
 // 	Name      string
 // 	Pwd       string
 // 	SessionId string
@@ -21,17 +19,16 @@ func (u User) TableName() string {
 	return "user"
 }
 
-// func (u *User) QueryByName(name string) {
-// 	db.Find(u, "name = ?", name)
-// }
-
-func QueryUserByName(name string) (u *User) {
-	db.Find(u, "name = ?", name)
+func QueryUserByName(name string) (u User) {
+	db.Find(&u, "name = ?", name)
 	return
 }
 
 func (u User) Insert() uint {
-	db.Create(&u)
+	result := db.Create(&u)
+	if result.Error != nil {
+		panic(result.Error)
+	}
 	return u.ID
 }
 
@@ -47,5 +44,10 @@ func (u User) Delete() {
 
 /* 登入使用 */
 func (u User) UpdateLoginTime() {
-	db.Model(&User{}).Where("id = ?", u.ID).Update("loginTime", time.Now())
+	t := time.Now()
+	updateData := User{
+		LoginTime: &t,
+		SessionId: u.SessionId,
+	}
+	db.Model(&User{}).Where("id = ?", u.ID).Update(updateData)
 }

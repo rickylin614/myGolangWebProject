@@ -16,14 +16,14 @@ func RouterSetting(router *gin.Engine) {
 	}
 
 	userGroup := mainRouter.Group("/user")
-	{
-		//set user handler here
-		fmt.Println(userGroup)
+	{ //set user handler here
+		userGroup.POST("/register", contoller.Register)
+		userGroup.POST("/login", contoller.Login)
+		userGroup.GET("/logout", contoller.Logout)
 	}
 
 	menuGroup := mainRouter.Group("/menu")
-	{
-		//set menu handler here
+	{ //set menu handler here
 		fmt.Println(menuGroup)
 	}
 

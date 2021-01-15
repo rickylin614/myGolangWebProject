@@ -2,10 +2,6 @@ package utils
 
 import "github.com/go-redis/redis"
 
-const (
-	LoginKey = "LoginKey:"
-)
-
 var redisdb *redis.Client
 
 func init() {
