@@ -7,6 +7,7 @@ import (
 
 	"orderbento/src/constant"
 	"orderbento/src/dao"
+	"orderbento/src/models"
 	"orderbento/src/utils"
 
 	"github.com/gin-gonic/gin"
@@ -49,6 +50,15 @@ func Login(ctx *gin.Context) {
 	}
 	user := dao.QueryUserByName(data.Name)
 	if user.ID != 0 {
+		/* 密碼檢查 start */
+		if user.Pwd != data.Password {
+			ctx.JSON(http.StatusOK, gin.H{
+				"msg":  "密碼錯誤",
+				"code": "error",
+			})
+			return
+		}
+		/* 密碼檢查 end */
 		user.SessionId = uuid.New().String()
 		redisdb := utils.GetRedisDb()
 		redisdb.Set(constant.LoginKey+user.SessionId, time.Now().Nanosecond(), time.Hour*3)
@@ -58,6 +68,12 @@ func Login(ctx *gin.Context) {
 			"code": http.StatusOK,
 		})
 		user.UpdateLoginTime()
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"msg":  "查無使用者帳號",
+			"code": "error",
+		})
+		return
 	}
 }
 
@@ -77,4 +93,34 @@ func Logout(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "登出成功",
 	})
+}
+
+func QueryUser(ctx *gin.Context) {
+	var req map[string]int
+	err := ctx.Bind(&req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	users := dao.QueryUser(req)
+	userResps := composeUserResp(users)
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg":  "查詢成功",
+		"data": &userResps,
+	})
+}
+
+func composeUserResp(us []dao.User) []models.UserResponse {
+	urs := make([]models.UserResponse, 0, len(us))
+	var ursp models.UserResponse
+	for _, user := range us {
+		ursp = models.UserResponse{
+			ID:        user.ID,
+			Name:      user.Name,
+			LoginTime: utils.TimeToString(user.LoginTime),
+			CreatedAt: utils.TimeToString(&user.CreatedAt),
+		}
+		urs = append(urs, ursp)
+	}
+	return urs
 }

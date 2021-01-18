@@ -14,3 +14,10 @@ type User struct {
 	LoginTime *time.Time `gorm:"type:time"`
 	gorm.Model
 }
+
+type UserResponse struct {
+	ID        uint
+	Name      string
+	LoginTime string
+	CreatedAt string
+}

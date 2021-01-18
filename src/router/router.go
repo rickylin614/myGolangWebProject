@@ -20,6 +20,7 @@ func RouterSetting(router *gin.Engine) {
 		userGroup.POST("/register", contoller.Register)
 		userGroup.POST("/login", contoller.Login)
 		userGroup.GET("/logout", contoller.Logout)
+		userGroup.POST("/queryUser", contoller.QueryUser)
 	}
 
 	menuGroup := mainRouter.Group("/menu")
