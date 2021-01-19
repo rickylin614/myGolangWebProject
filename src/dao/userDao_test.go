@@ -11,18 +11,18 @@ import (
 func TestQueryUser(t *testing.T) {
 	tests := []struct {
 		name      string
-		data      map[string]int
+		data      map[string]interface{}
 		wantUsers []User
 	}{
 		// TODO: Add test cases.
-		{"test1", map[string]int{
+		{"test1", map[string]interface{}{
 			"pageNo":   1,
 			"pageSize": 20,
 		}, nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotUsers := QueryUser(tt.data)
+			gotUsers, _ := QueryUser(tt.data)
 			if len(gotUsers) == 0 {
 				b, _ := json.Marshal(gotUsers)
 				t.Errorf("QueryUser() = %v, want %v", string(b), tt.wantUsers)

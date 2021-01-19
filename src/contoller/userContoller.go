@@ -96,17 +96,18 @@ func Logout(ctx *gin.Context) {
 }
 
 func QueryUser(ctx *gin.Context) {
-	var req map[string]int
+	var req map[string]interface{}
 	err := ctx.Bind(&req)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	users := dao.QueryUser(req)
+	users, count := dao.QueryUser(req)
 	userResps := composeUserResp(users)
 	ctx.JSON(http.StatusOK, gin.H{
-		"msg":  "查詢成功",
-		"data": &userResps,
+		"msg":       "查詢成功",
+		"data":      &userResps,
+		"dataCount": count,
 	})
 }
 

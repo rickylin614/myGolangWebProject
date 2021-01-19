@@ -5,14 +5,6 @@ import (
 	"time"
 )
 
-// type User struct {
-// 	Name      string
-// 	Pwd       string
-// 	SessionId string
-// 	LoginTime time.Time `gorm:"type:time"`
-// 	gorm.Model
-// }
-
 type User models.User
 
 func (u User) TableName() string {
@@ -24,17 +16,24 @@ func QueryUserByName(name string) (u User) {
 	return
 }
 
-func QueryUser(data map[string]int) (users []User) {
+func QueryUser(data map[string]interface{}) (users []User, count int) {
+	ndb := db //不可影響到原本的db (因後面做的 ndb = ndb.where 會改動原本的值)
 	pageNo := 1
 	pageSize := 20
-	if data["pageNo"] != 0 {
-		pageNo = data["pageNo"]
+	if val, ok := data["pageNo"].(int); ok {
+		pageNo = val
 	}
-	if data["pageSize"] != 0 {
-		pageSize = data["pageSize"]
+	if val, ok := data["pageSize"].(int); ok {
+		pageSize = val
+	}
+	if val, ok := data["name"].(string); ok && val != "" {
+		ndb = ndb.Where("name = ?", val)
 	}
 	offset := (pageNo - 1) * pageSize
-	db.Offset(offset).Limit(pageSize).Find(&users)
+	db.Count(&count)
+	if count != 0 { //若count為0則不去計算
+		ndb.Offset(offset).Limit(pageSize).Find(&users)
+	}
 	return
 }
 
