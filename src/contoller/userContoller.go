@@ -6,13 +6,16 @@ import (
 	"time"
 
 	"orderbento/src/constant"
-	"orderbento/src/dao"
+	"orderbento/src/dao/userDao"
 	"orderbento/src/models"
+	"orderbento/src/service/userService"
 	"orderbento/src/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
+
+//D:\orderSystem\backend_order_bento\src\service\userService\userService.go
 
 type userReq struct {
 	Name     string `binding:"required"`
@@ -27,7 +30,7 @@ func Register(ctx *gin.Context) {
 		return
 	}
 	resp := make(gin.H)
-	user := dao.QueryUserByName(data.Name)
+	user := userService.QueryUserByName(data.Name)
 	fmt.Println(user)
 	if user.ID != 0 {
 		resp["msg"] = "已註冊的帳號"
@@ -35,7 +38,7 @@ func Register(ctx *gin.Context) {
 	} else {
 		user.Name = data.Name
 		user.Pwd = data.Password
-		user.Insert()
+		userService.Insert(user)
 		resp["msg"] = "註冊成功"
 	}
 	ctx.JSON(http.StatusOK, resp)
@@ -48,7 +51,7 @@ func Login(ctx *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	user := dao.QueryUserByName(data.Name)
+	user := userService.QueryUserByName(data.Name)
 	if user.ID != 0 {
 		/* 密碼檢查 start */
 		if user.Pwd != data.Password {
@@ -67,7 +70,7 @@ func Login(ctx *gin.Context) {
 			"msg":  "登入成功",
 			"code": http.StatusOK,
 		})
-		user.UpdateLoginTime()
+		userService.UpdateLoginTime(user)
 	} else {
 		ctx.JSON(http.StatusOK, gin.H{
 			"msg":  "查無使用者帳號",
@@ -102,7 +105,7 @@ func QueryUser(ctx *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-	users, count := dao.QueryUser(req)
+	users, count := userService.QueryUser(req)
 	userResps := composeUserResp(users)
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg":       "查詢成功",
@@ -111,7 +114,7 @@ func QueryUser(ctx *gin.Context) {
 	})
 }
 
-func composeUserResp(us []dao.User) []models.UserResponse {
+func composeUserResp(us []userDao.User) []models.UserResponse {
 	urs := make([]models.UserResponse, 0, len(us))
 	var ursp models.UserResponse
 	for _, user := range us {

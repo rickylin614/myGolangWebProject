@@ -25,3 +25,9 @@ func init() {
 	db.DB().SetMaxOpenConns(100)
 	db.LogMode(true)
 }
+
+// return a clone db
+func GetDB() *gorm.DB {
+	db := db
+	return db
+}
