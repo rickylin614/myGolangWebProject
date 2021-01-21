@@ -1,4 +1,4 @@
-package dao
+package userDao
 
 import (
 	"encoding/json"
@@ -11,18 +11,19 @@ import (
 func TestQueryUser(t *testing.T) {
 	tests := []struct {
 		name      string
-		data      map[string]int
+		pageNo    int
+		pageSize  int
+		data      map[string]interface{}
 		wantUsers []User
 	}{
 		// TODO: Add test cases.
-		{"test1", map[string]int{
-			"pageNo":   1,
-			"pageSize": 20,
+		{"test1", 1, 20, map[string]interface{}{
+			"name": "ricky002",
 		}, nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotUsers := QueryUser(tt.data)
+			gotUsers, _ := QueryUser(tt.pageNo, tt.pageSize, tt.data)
 			if len(gotUsers) == 0 {
 				b, _ := json.Marshal(gotUsers)
 				t.Errorf("QueryUser() = %v, want %v", string(b), tt.wantUsers)
@@ -38,8 +39,8 @@ func TestQueryUserByName(t *testing.T) {
 		wantU     User
 	}{
 		// TODO: Add test cases.
-		{"test", "ricky001", User{Model: gorm.Model{ID: 2}, Pwd: "qwe123"}},
-		{"test2", "ricky002", User{Model: gorm.Model{ID: 1}, Pwd: "qwe123"}},
+		{"test", "ricky001", User{Model: gorm.Model{ID: 1}, Pwd: "qwe123"}},
+		{"test2", "ricky002", User{Model: gorm.Model{ID: 2}, Pwd: "qwe123"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
