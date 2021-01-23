@@ -1,6 +1,9 @@
 package dao
 
 import (
+	"log"
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -23,7 +26,13 @@ func init() {
 	db.DB().SetMaxIdleConns(10)
 	// SetMaxOpenCons 设置数据库的最大连接数量。
 	db.DB().SetMaxOpenConns(100)
+	// 設定顯示dao log
 	db.LogMode(true)
+}
+
+func SetLogFile(out *os.File) {
+	logger := log.New(out, "\r\n", log.LstdFlags)
+	db.SetLogger(logger)
 }
 
 // return a clone db
