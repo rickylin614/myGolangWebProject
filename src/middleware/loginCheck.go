@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"orderbento/src/constant"
 	"orderbento/src/utils"
+	"orderbento/src/utils/zapLog"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +24,7 @@ func LoginCheck(ctx *gin.Context) {
 	data, err := ctx.Cookie("sessionId")
 
 	if err != nil {
-		fmt.Println(err)
+		zapLog.ErrorW("login check error!:", err)
 		ctx.JSON(http.StatusOK, out)
 		ctx.Abort()
 		return

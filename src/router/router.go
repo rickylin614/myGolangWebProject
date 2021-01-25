@@ -21,6 +21,7 @@ func RouterSetting(router *gin.Engine) {
 		userGroup.POST("/login", contoller.Login)
 		userGroup.GET("/logout", contoller.Logout)
 		userGroup.POST("/queryUser", contoller.QueryUser)
+		userGroup.POST("/loginRecord", contoller.LoginRecord)
 	}
 
 	menuGroup := mainRouter.Group("/menu")

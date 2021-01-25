@@ -2,6 +2,7 @@ package userService
 
 import (
 	"orderbento/src/dao/userDao"
+	"orderbento/src/utils"
 )
 
 /* 查詢用戶名稱 */
@@ -11,14 +12,7 @@ func QueryUserByName(name string) (u userDao.User) {
 
 /* 條件式查詢用戶 */
 func QueryUser(data map[string]interface{}) (users []userDao.User, count int) {
-	pageNo := 1
-	pageSize := 20
-	if val, ok := data["pageNo"].(float64); ok {
-		pageNo = int(val)
-	}
-	if val, ok := data["pageSize"].(float64); ok {
-		pageSize = int(val)
-	}
+	pageNo, pageSize := utils.GetPage(data)
 	params := make(map[string]interface{})
 	if val, ok := data["name"].(string); ok && val != "" {
 		params["name"] = val
