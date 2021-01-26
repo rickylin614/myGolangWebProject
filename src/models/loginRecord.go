@@ -12,3 +12,12 @@ type LoginRecord struct {
 	Header     string
 	LoginState int
 }
+
+type LoginRecordResponse struct {
+	Id         uint `gorm:"primary_key"`
+	Name       string
+	UserId     uint
+	LoginTime  string
+	Ip         string
+	LoginState string
+}

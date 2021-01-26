@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"orderbento/src/constant"
+	"orderbento/src/dao/loginRecordDao"
 	"orderbento/src/dao/userDao"
 	"orderbento/src/models"
 	"orderbento/src/service/loginRecordService"
@@ -155,9 +156,33 @@ func LoginRecord(ctx *gin.Context) {
 		return
 	}
 	records, count := loginRecordService.Index(params)
+	data := composeLoginRecordResp(records)
 	ctx.JSON(http.StatusOK, gin.H{
-		"data":      records,
+		"data":      data,
 		"dataCount": count,
 		"msg":       Suc,
 	})
+}
+
+/* 組合登入紀錄回傳資料 */
+func composeLoginRecordResp(records []loginRecordDao.LoginRecord) []models.LoginRecordResponse {
+	resps := make([]models.LoginRecordResponse, 0, len(records))
+	for _, record := range records {
+		var state string
+		if record.LoginState == 0 {
+			state = "登入"
+		} else {
+			state = "登出"
+		}
+		resp := models.LoginRecordResponse{
+			Id:         record.Id,
+			Name:       record.Name,
+			UserId:     record.Id,
+			LoginTime:  utils.TimeToString(&record.LoginTime),
+			Ip:         record.Ip,
+			LoginState: state,
+		}
+		resps = append(resps, resp)
+	}
+	return resps
 }
