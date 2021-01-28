@@ -1,7 +1,12 @@
 package zapLog
 
 import (
+	"os"
+	"strings"
+
 	"go.uber.org/zap"
+
+	"orderbento/src/utils/viperUtils"
 )
 
 //go get -u go.uber.org/zap
@@ -18,6 +23,7 @@ import (
 var logger *zap.Logger
 
 func init() {
+	path := viperUtils.GetLogPath()
 	config := &zap.Config{
 		Level:       zap.NewAtomicLevelAt(zap.DebugLevel),
 		Development: false,
@@ -27,10 +33,19 @@ func init() {
 		},
 		Encoding:         "console",
 		EncoderConfig:    zap.NewProductionEncoderConfig(),
-		OutputPaths:      []string{"stderr", ".\\test.log"}, // TODO: 之後應以設定檔為主
-		ErrorOutputPaths: []string{"stderr", ".\\test.log"}, // TODO: 之後應以設定檔為主
+		OutputPaths:      []string{"stderr", path}, // TODO: 之後應以設定檔為主
+		ErrorOutputPaths: []string{"stderr", path}, // TODO: 之後應以設定檔為主
 	}
-	var err error
+
+	//確認輸出路徑有資料夾，沒有就創建
+	dir := path[:strings.LastIndex(path, "/")]
+	_, err := os.Stat(dir)
+	if os.IsNotExist(err) {
+		errDir := os.MkdirAll(dir, os.ModePerm)
+		if errDir != nil {
+			panic(errDir)
+		}
+	}
 	logger, err = config.Build()
 	if err != nil {
 		panic(err)
@@ -53,6 +68,12 @@ func WriteLogError(msg string, fields ...zap.Field) {
 func ErrorW(msg string, err error) {
 	defer sync()
 	logger.Error(msg, zap.Error(err))
+}
+
+/* quick panic error, skip annotation zap.Error() */
+func PanicW(msg string, err error) {
+	defer sync()
+	logger.Panic(msg, zap.Error(err))
 }
 
 /* write log with debugLevel */
