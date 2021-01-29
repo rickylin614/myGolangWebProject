@@ -13,7 +13,7 @@ import (
 //default setting
 
 func GinInit() *gin.Engine {
-	gin.SetMode(gin.ReleaseMode) //設定模式 之後應由設定檔設定
+	// gin.SetMode(gin.ReleaseMode) //設定模式 之後應由設定檔設定
 
 	// 設定日誌輸出位置
 	if gin.Mode() == gin.ReleaseMode {
