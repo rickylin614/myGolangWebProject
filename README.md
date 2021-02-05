@@ -5,9 +5,7 @@
 - 採前後分離
 - 對應前端Vue : <https://github.com/ddalbert66/vue_order_bento>
 
-# 使用技術
-
-## 前端:
+# 前端:
 	使用前端框架: vue.js(v2.5.2)
 -	套件版本:
 	>axios: v0.21.1,<br>
@@ -16,7 +14,7 @@
     	vuex: v3.6.0,<br>
 	net: v1.0.2,
 	
-## 後端:
+# 後端:
 	使用語言:golang
 -	依賴:
 	>gin-gonic/gin v1.6.3  // 網頁框架<br>
@@ -26,7 +24,7 @@
 	uber-go/zap v1.16.0 // 日誌記錄套件<br>
 	github.com/spf13/viper v1.7.1 // 設定檔存讀套件<br>
 	
-## 其他技術應用:
+# 其他技術應用:
 -
 	>ngnix : http跳轉使用/IP限制使用<br>
 	redis server : 登入緩存使用<br>
