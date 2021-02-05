@@ -10,27 +10,27 @@
 ## 前端:
 	使用前端框架: vue.js(v2.5.2)
 -	套件版本:
-	>axios: v0.21.1,
-    element-ui: v2.14.1,
-    vue-router: v3.0.1,
-    >vuex: v3.6.0,
-	>net: v1.0.2,
+	>axios: v0.21.1,<br>
+	element-ui: v2.14.1,<br>
+    	vue-router: v3.0.1,<br>
+    	vuex: v3.6.0,<br>
+	net: v1.0.2,
 	
 ## 後端:
 	使用語言:golang
 -	依賴:
-	>gin-gonic/gin v1.6.3  // 網頁框架
-	>go-sql-driver/mysql v1.5.0 // SQL DRIVER
-	>jinzhu/gorm v1.9.16 // ORM套件
-	>google/uuid v1.1.4 // uuid套件
-	>uber-go/zap v1.16.0 // 日誌記錄套件
-	>github.com/spf13/viper v1.7.1 // 設定檔存讀套件
+	>gin-gonic/gin v1.6.3  // 網頁框架<br>
+	go-sql-driver/mysql v1.5.0 // SQL DRIVER<br>
+	jinzhu/gorm v1.9.16 // ORM套件<br>
+	google/uuid v1.1.4 // uuid套件<br>
+	uber-go/zap v1.16.0 // 日誌記錄套件<br>
+	github.com/spf13/viper v1.7.1 // 設定檔存讀套件<br>
 	
 ## 其他技術應用:
-
->   ngnix : http跳轉使用/IP限制使用
->   redis server : 登入緩存使用
->   mysql server : 系統資料保存
+-
+>   ngnix : http跳轉使用/IP限制使用<br>
+>   redis server : 登入緩存使用<br>
+>   mysql server : 系統資料保存<br>
 
 ## 依賴包說明
 ### 1. gin-gonic
