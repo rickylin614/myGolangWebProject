@@ -11,8 +11,8 @@
 	使用前端框架: vue.js(v2.5.2)
 -	套件版本:
 	>axios: v0.21.1,
-    >element-ui: v2.14.1,
-    >vue-router: v3.0.1,
+    element-ui: v2.14.1,
+    vue-router: v3.0.1,
     >vuex: v3.6.0,
 	>net: v1.0.2,
 	
