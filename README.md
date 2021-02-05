@@ -7,7 +7,30 @@
 
 # 使用技術
 
+## 前端:
+	使用前端框架: vue.js(v2.5.2)
+-	套件版本:
+	>axios: v0.21.1,
+    >element-ui: v2.14.1,
+    >vue-router: v3.0.1,
+    >vuex: v3.6.0,
+	>net: v1.0.2,
+	
+## 後端:
+	使用語言:golang
+-	依賴:
+	>gin-gonic/gin v1.6.3  // 網頁框架
+	>go-sql-driver/mysql v1.5.0 // SQL DRIVER
+	>jinzhu/gorm v1.9.16 // ORM套件
+	>google/uuid v1.1.4 // uuid套件
+	>uber-go/zap v1.16.0 // 日誌記錄套件
+	>github.com/spf13/viper v1.7.1 // 設定檔存讀套件
+	
+## 其他技術應用:
 
+>   ngnix : http跳轉使用/IP限制使用
+>   redis server : 登入緩存使用
+>   mysql server : 系統資料保存
 
 ## 依賴包說明
 ### 1. gin-gonic
@@ -46,6 +69,8 @@
 - 快速產生不會重複的唯一值
 - 目前作用存取用戶識別(產生session id給予用戶)
 
-### 6. gorilla/websocket
+### 7. gorilla/websocket
 
-- 待補
+- 用於快速部屬長連線通訊協定
+- 用於即時回傳訊息給用戶
+- 用於即時給前端新增好友通知、新群組通知等等提示訊息
