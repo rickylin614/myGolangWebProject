@@ -28,9 +28,9 @@
 	
 ## 其他技術應用:
 -
->   ngnix : http跳轉使用/IP限制使用<br>
->   redis server : 登入緩存使用<br>
->   mysql server : 系統資料保存<br>
+	>ngnix : http跳轉使用/IP限制使用<br>
+	redis server : 登入緩存使用<br>
+	mysql server : 系統資料保存<br>
 
 ## 依賴包說明
 ### 1. gin-gonic
