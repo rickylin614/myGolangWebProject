@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"orderbento/src/controller"
+	"orderbento/src/controller/imCtrl"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,7 @@ func RouterSetting(router *gin.Engine) {
 	//main setting
 	{
 		mainRouter.GET("/linkCheck", controller.LinkCheck)
+		mainRouter.GET("/chat", imCtrl.ConnectHandler)
 	}
 
 	userGroup := mainRouter.Group("/user")

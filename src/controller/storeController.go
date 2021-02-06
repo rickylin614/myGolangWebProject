@@ -105,8 +105,7 @@ func DeleteStore(ctx *gin.Context) {
 
 func composeOneStoreResp(s storeDao.Store) models.StoreResponse {
 
-	var storesp models.StoreResponse
-	storesp = models.StoreResponse{
+	var storesp models.StoreResponse = models.StoreResponse{
 		ID:          s.ID,
 		Name:        s.Name,
 		PhoneNo:     strconv.Itoa(s.Phone_no),

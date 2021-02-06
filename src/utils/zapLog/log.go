@@ -33,8 +33,8 @@ func init() {
 		},
 		Encoding:         "console",
 		EncoderConfig:    zap.NewProductionEncoderConfig(),
-		OutputPaths:      []string{"stderr", path}, // TODO: 之後應以設定檔為主
-		ErrorOutputPaths: []string{"stderr", path}, // TODO: 之後應以設定檔為主
+		OutputPaths:      []string{"stderr", path}, // strerr use in debug mode
+		ErrorOutputPaths: []string{"stderr", path}, //
 	}
 
 	//確認輸出路徑有資料夾，沒有就創建
