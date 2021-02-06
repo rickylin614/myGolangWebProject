@@ -1,7 +1,7 @@
 package server
 
 import (
-	"orderbento/src/contoller"
+	"orderbento/src/controller"
 	"orderbento/src/dao"
 	"orderbento/src/middleware"
 	"orderbento/src/utils/viperUtils"
@@ -24,8 +24,8 @@ func GinInit() *gin.Engine {
 	}
 
 	router := gin.Default()
-	router.NoRoute(contoller.NoSetting)
-	router.NoMethod(contoller.NoSetting)
+	router.NoRoute(controller.NoSetting)
+	router.NoMethod(controller.NoSetting)
 
 	//中間件設定
 	{
