@@ -72,6 +72,7 @@ func handleMessage(c *Client) {
 	defer func() {
 		if err := recover(); err != nil {
 			wsManager.UnRegister <- c
+			c.Conn.Close()
 		}
 	}()
 
@@ -80,6 +81,7 @@ func handleMessage(c *Client) {
 		_, message, err := c.Conn.ReadMessage()
 		if err != nil {
 			zapLog.PanicW("read data error", err)
+			return
 		}
 		go boardCast(message, c)
 	}
@@ -88,7 +90,7 @@ func handleMessage(c *Client) {
 /* 將訊息發送給對應組別所有用戶 */
 func boardCast(msg []byte, c *Client) {
 	groupMap := wsManager.Group[c.Group]
-	jsonStr := `{"m":"` + string(msg) + `","n":"` + c.Name + `"}`
+	jsonStr := `{"m":"` + string(msg) + `","n":"` + c.Name + `","r":"` + c.Group + `"}`
 	var byteMsg []byte = []byte(jsonStr)
 	for _, cli := range groupMap {
 		err := cli.Conn.WriteMessage(websocket.BinaryMessage, byteMsg)

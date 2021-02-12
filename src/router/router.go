@@ -2,8 +2,8 @@ package router
 
 import (
 	"fmt"
-	"orderbento/src/controller"
-	"orderbento/src/controller/imCtrl"
+	"rickyWeb/src/controller"
+	"rickyWeb/src/controller/imCtrl"
 
 	"github.com/gin-gonic/gin"
 )

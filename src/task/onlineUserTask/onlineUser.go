@@ -1,9 +1,9 @@
 package onlineUserTask
 
 import (
-	"orderbento/src/constant"
-	"orderbento/src/utils"
-	"orderbento/src/utils/zapLog"
+	"rickyWeb/src/constant"
+	"rickyWeb/src/utils"
+	"rickyWeb/src/utils/zapLog"
 	"time"
 
 	"go.uber.org/zap"
@@ -13,14 +13,17 @@ func StartMemberCheck() {
 	go TickForOnlineMember()
 }
 
+/* 每三分鐘執行一次 */
 func TickForOnlineMember() {
-	c := time.Tick(time.Minute * 30)
+	ticker := time.NewTicker(time.Minute * 3)
 	for {
-		<-c
+		<-ticker.C
+		/* 避免執行操過3分鐘，欲執行項目皆額外呼叫goroutine */
 		go OnlineMemberCheckTask()
 	}
 }
 
+/* 清除已過期用戶 */
 func OnlineMemberCheckTask() {
 	redisdb := utils.GetRedisDb()
 	ssMapCmd := redisdb.HGetAll(constant.LoginOnlineHash)

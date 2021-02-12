@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"orderbento/src/utils/viperUtils"
+	"rickyWeb/src/utils/viperUtils"
 )
 
 //go get -u go.uber.org/zap
