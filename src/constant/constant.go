@@ -1,7 +1,8 @@
 package constant
 
 const (
-	LoginKey = "LoginKey:"
+	LoginKey        = "LoginKey:"
+	LoginOnlineHash = "LoginOnlineHash"
 )
 
 const (

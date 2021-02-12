@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"time"
 
-	"rickyWeb/src/constant"
-	"rickyWeb/src/dao/loginRecordDao"
-	"rickyWeb/src/dao/userDao"
-	"rickyWeb/src/models"
-	"rickyWeb/src/service/loginRecordService"
-	"rickyWeb/src/service/userService"
-	"rickyWeb/src/utils"
-	"rickyWeb/src/utils/zapLog"
+	"orderbento/src/constant"
+	"orderbento/src/dao/loginRecordDao"
+	"orderbento/src/dao/userDao"
+	"orderbento/src/models"
+	"orderbento/src/service/loginRecordService"
+	"orderbento/src/service/userService"
+	"orderbento/src/utils"
+	"orderbento/src/utils/zapLog"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -77,6 +77,7 @@ func Login(ctx *gin.Context) {
 			return
 		}
 		redisdb.Set(constant.LoginKey+user.SessionId, userJson, time.Hour*3)
+		redisdb.HSet(constant.LoginOnlineHash, constant.LoginKey+user.SessionId, userJson)
 		ctx.SetCookie("sessionId", user.SessionId, int(time.Hour*3), "/", "", false, true)
 		ctx.JSON(http.StatusOK, gin.H{
 			"msg":  "登入成功",
@@ -102,7 +103,9 @@ func Logout(ctx *gin.Context) {
 	}
 	ctx.SetCookie("sessionId", "", -1, "/", "", false, true) //時間設為-1 刪除cookie
 	key := constant.LoginKey + sessionId
-	jsonStr := utils.GetDel(key)
+	jsonStr := utils.GetDel(key)                           //刪除單一redis並取回資料存入登出紀錄
+	utils.GetRedisDb().HDel(constant.LoginOnlineHash, key) //從在線名單中刪除
+
 	var user userDao.User
 	err = json.Unmarshal([]byte(jsonStr), &user)
 	if err != nil {
@@ -185,4 +188,69 @@ func composeLoginRecordResp(records []loginRecordDao.LoginRecord) []models.Login
 		resps = append(resps, resp)
 	}
 	return resps
+}
+
+/* 查詢在線用戶列表 */
+func OnlineMemberList(ctx *gin.Context) {
+	redisdb := utils.GetRedisDb()
+	ssMapCmd := redisdb.HGetAll(constant.LoginOnlineHash)
+	if ssMapCmd.Err() != nil {
+		zapLog.ErrorW("online memeber query error", ssMapCmd.Err())
+		return
+	}
+	var userList []userDao.User
+	for _, v := range ssMapCmd.Val() {
+		var user userDao.User
+		err := json.Unmarshal([]byte(v), &user)
+		if err == nil {
+			userList = append(userList, user)
+		}
+	}
+	resData := composeUserResp(userList)
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": resData,
+		"msg":  Suc,
+	})
+}
+
+/* 踢出在線會員並返回新列表 */
+func OnlineMemberKick(ctx *gin.Context) {
+	var params map[string]interface{}
+	err := ctx.ShouldBind(&params)
+	if err != nil {
+		zapLog.ErrorW("kick err", err)
+		return
+	}
+	var id uint
+	if val, ok := params["ID"].(float64); ok {
+		id = uint(val)
+	}
+
+	// 查詢redis上的在線資料
+	redisdb := utils.GetRedisDb()
+	ssMapCmd := redisdb.HGetAll(constant.LoginOnlineHash)
+	if ssMapCmd.Err() != nil {
+		zapLog.ErrorW("online memeber query error", ssMapCmd.Err())
+		return
+	}
+
+	// 遍歷尋找ID踢出並返回新資料
+	var userList []userDao.User
+	for key, val := range ssMapCmd.Val() {
+		var user userDao.User
+		err := json.Unmarshal([]byte(val), &user)
+		if err == nil {
+			if user.ID == id {
+				redisdb.Del(key)
+				redisdb.HDel(constant.LoginOnlineHash, key)
+			} else {
+				userList = append(userList, user)
+			}
+		}
+	}
+	resData := composeUserResp(userList)
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": resData,
+		"msg":  Suc,
+	})
 }

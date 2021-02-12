@@ -2,8 +2,8 @@ package router
 
 import (
 	"fmt"
-	"rickyWeb/src/controller"
-	"rickyWeb/src/controller/imCtrl"
+	"orderbento/src/controller"
+	"orderbento/src/controller/imCtrl"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +24,8 @@ func RouterSetting(router *gin.Engine) {
 		userGroup.GET("/logout", controller.Logout)
 		userGroup.POST("/queryUser", controller.QueryUser)
 		userGroup.POST("/loginRecord", controller.LoginRecord)
+		userGroup.POST("/onlineMemberList", controller.OnlineMemberList)
+		userGroup.POST("/onlineMemberKick", controller.OnlineMemberKick)
 	}
 
 	storeGroup := mainRouter.Group("/store")

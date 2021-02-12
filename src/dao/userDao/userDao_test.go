@@ -16,7 +16,6 @@ func TestQueryUser(t *testing.T) {
 		data      map[string]interface{}
 		wantUsers []User
 	}{
-		// TODO: Add test cases.
 		{"test1", 1, 20, map[string]interface{}{
 			"name": "ricky002",
 		}, nil},
@@ -38,7 +37,6 @@ func TestQueryUserByName(t *testing.T) {
 		loginName string
 		wantU     User
 	}{
-		// TODO: Add test cases.
 		{"test", "ricky001", User{Model: gorm.Model{ID: 1}, Pwd: "qwe123"}},
 		{"test2", "ricky002", User{Model: gorm.Model{ID: 2}, Pwd: "qwe123"}},
 	}

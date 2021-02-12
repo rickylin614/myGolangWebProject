@@ -3,27 +3,24 @@ package zapLog
 import (
 	"os"
 	"strings"
+	"time"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
-	"rickyWeb/src/utils/viperUtils"
+	"orderbento/src/utils/viperUtils"
 )
 
 //go get -u go.uber.org/zap
 
-/* 使用預設LOG */
-/* func GetLog() (logger *log.Logger) {
-	out := gin.DefaultErrorWriter // TODO: 先同步gin的錯誤日至，之後應以設定檔為主
-	if out != nil {
-		logger = log.New(out, "\n\n\x1b[31m", log.LstdFlags)
-	}
-	return logger
-} */
-
 var logger *zap.Logger
 
+/* 設定檔設定 */
 func init() {
 	path := viperUtils.GetLogPath()
+
+	productionEncoder := zap.NewProductionEncoderConfig()
+	productionEncoder.EncodeTime = definedTimeFormat
 	config := &zap.Config{
 		Level:       zap.NewAtomicLevelAt(zap.DebugLevel),
 		Development: false,
@@ -32,7 +29,7 @@ func init() {
 			Thereafter: 100,
 		},
 		Encoding:         "console",
-		EncoderConfig:    zap.NewProductionEncoderConfig(),
+		EncoderConfig:    productionEncoder,
 		OutputPaths:      []string{"stderr", path}, // strerr use in debug mode
 		ErrorOutputPaths: []string{"stderr", path}, //
 	}
@@ -50,6 +47,18 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+/* 自定義時間輸出格式 */
+func definedTimeFormat(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	type appendTimeEncoder interface {
+		AppendTimeEncoder(time.Time, string)
+	}
+	layout := "2006-01-02 15:04:05.999"
+	if enc, ok := enc.(appendTimeEncoder); ok {
+		enc.AppendTimeEncoder(t, layout)
+	}
+	enc.AppendString(t.Format(layout))
 }
 
 /* 使用預設 zap.logger.info */
