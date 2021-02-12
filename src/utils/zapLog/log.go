@@ -43,7 +43,7 @@ func init() {
 			panic(errDir)
 		}
 	}
-	logger, err = config.Build()
+	logger, err = config.Build(zap.AddCallerSkip(1))
 	if err != nil {
 		panic(err)
 	}
@@ -111,8 +111,9 @@ func WriteLogFatal(msg string, fields ...zap.Field) {
 
 /* flushing any buffered log */
 func sync() {
-	err := logger.Sync()
-	if err != nil {
-		panic(err)
-	}
+	_ = logger.Sync()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	panic(err)
+	// }
 }

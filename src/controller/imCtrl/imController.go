@@ -53,7 +53,6 @@ func ConnectHandler(ctx *gin.Context) {
 	}
 	if value, exist := ctx.Get("user"); exist {
 		if user, ok := value.(models.User); ok {
-			zapLog.WriteLogInfo("connect successs!!")
 			cli := &Client{
 				UserID: user.ID,
 				Name:   user.Name,
@@ -112,7 +111,6 @@ func (manager *Manager) ControllRegister() {
 		select {
 		// 註冊
 		case client := <-manager.Register:
-			zapLog.WriteLogInfo("client connect! userId:", zap.Uint("userId", client.UserID))
 			zapLog.WriteLogInfo("register", zap.Uint("client", client.UserID), zap.String("group", client.Group))
 
 			manager.Lock.Lock()
