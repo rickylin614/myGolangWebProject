@@ -3,7 +3,7 @@
 # Golang Web專案
 
 - 採前後分離
-- 對應前端Vue : <https://github.com/rickylin614/myGolangWebProjectVue>
+- 對應前端Vue : <https://github.com/rickylin614/myGolangWebProject>
 
 # 前端:
 	使用前端框架: vue.js(v2.5.2)
@@ -25,7 +25,7 @@
 	github.com/spf13/viper v1.7.1 // 設定檔存讀套件<br>
 	
 -   簡易流程
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/00.簡易架構流程.png) 
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/00.簡易架構流程.png) 
 
 ## 其他技術應用:
 -
@@ -81,7 +81,7 @@
 
 ### 1. 註冊
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/02.註冊頁面.jpg) 
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/02.註冊頁面.jpg) 
 
 - 用戶註冊 簡易的帳號密碼即可註冊 未來考慮增加驗證碼增加複雜度以及防機器人註冊
 > /src/controller/userController.go Register
@@ -113,7 +113,7 @@ ctx.JSON(http.StatusOK, resp)
 
 ### 2. 登入
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/01.登入頁面.jpg) 
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/01.登入頁面.jpg) 
 
 - 登入主要為驗證使用者輸入資料正確，以及存入REDIS和用戶端cookie
 > /src/controller/userController.go Login
@@ -196,13 +196,13 @@ ctx.Next() //繼續執行其餘handler
 
 - 若驗證不通過 前端接收回傳json判斷code為notLogin時 則出現彈窗並跳轉到登入頁面
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/04.未登入提示.jpg)
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/04.未登入提示.jpg)
 
 ### 4. 用戶頁面
 
 - 可查看所有用戶帳號以及註冊時間、最後登入時間
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/03.用戶管理頁面.jpg)
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/03.用戶管理頁面.jpg)
 > /src/controller/userController.go QueryUser
 
 ```
@@ -245,7 +245,7 @@ func composeUserResp(us []userDao.User) []models.UserResponse {
 
 - 查詢使用者登入紀錄
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/05.登入紀錄.jpg)
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/05.登入紀錄.jpg)
 > /src/controller/userController.go LoginRecord
 
 ```
@@ -271,7 +271,7 @@ ctx.JSON(http.StatusOK, gin.H{
 - 該頁面設有踢出功能，踢出後該會員必須重新登入才可進行操作。
 > /src/controller/userController.go OnlineMemberList
 > /src/controller/userController.go OnlineMemberKick
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/06.在線會員.jpg)
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/06.在線會員.jpg)
 
 - 查詢程式碼
 
@@ -331,7 +331,7 @@ func OnlineMemberCheckTask() {
 - 可進入聊天室房間，進行不同房間之間的溝通對話，採用websocket長連線，前端可即時收到新訊息
 > /src/controller/imCtrl/imController.go
 
-![](https://github.com/rickylin614/myGolangWebProjectVue/raw/master/resource/image/07.聊天室演示.jpg)
+![](https://github.com/rickylin614/myGolangWebProject/raw/master/resource/image/07.聊天室演示.jpg)
 
 利用goroutine監聽每個成功連接的用戶，會在ControllRegister裡接收註冊/註銷的用戶，寫到全域管理方法
 
