@@ -18,7 +18,7 @@ func TickForOnlineMember() {
 	ticker := time.NewTicker(time.Minute * 3)
 	for {
 		<-ticker.C
-		/* 避免執行操過3分鐘，欲執行項目皆額外呼叫goroutine */
+		/* 避免執行超過3分鐘，欲執行項目皆額外呼叫goroutine */
 		go OnlineMemberCheckTask()
 	}
 }
