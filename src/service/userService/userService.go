@@ -1,8 +1,8 @@
 package userService
 
 import (
-	"orderbento/src/dao/userDao"
-	"orderbento/src/utils"
+	"rickyWeb/src/dao/userDao"
+	"rickyWeb/src/utils"
 )
 
 /* 查詢用戶名稱 */

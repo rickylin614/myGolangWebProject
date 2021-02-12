@@ -1,8 +1,8 @@
 package loginRecordDao
 
 import (
-	"orderbento/src/dao"
-	"orderbento/src/models"
+	"rickyWeb/src/dao"
+	"rickyWeb/src/models"
 
 	"github.com/jinzhu/gorm"
 )

@@ -1,10 +1,10 @@
 package server
 
 import (
-	"orderbento/src/controller"
-	"orderbento/src/dao"
-	"orderbento/src/middleware"
-	"orderbento/src/utils/viperUtils"
+	"rickyWeb/src/controller"
+	"rickyWeb/src/dao"
+	"rickyWeb/src/middleware"
+	"rickyWeb/src/utils/viperUtils"
 	"os"
 
 	"github.com/gin-gonic/gin"

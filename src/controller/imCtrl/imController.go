@@ -2,8 +2,8 @@ package imCtrl
 
 import (
 	"net/http"
-	"orderbento/src/models"
-	"orderbento/src/utils/zapLog"
+	"rickyWeb/src/models"
+	"rickyWeb/src/utils/zapLog"
 	"sync"
 
 	"github.com/gin-gonic/gin"

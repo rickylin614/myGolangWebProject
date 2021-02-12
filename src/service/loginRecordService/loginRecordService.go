@@ -3,9 +3,9 @@ package loginRecordService
 import (
 	"fmt"
 	"net/http"
-	"orderbento/src/dao/loginRecordDao"
-	"orderbento/src/dao/userDao"
-	"orderbento/src/utils"
+	"rickyWeb/src/dao/loginRecordDao"
+	"rickyWeb/src/dao/userDao"
+	"rickyWeb/src/utils"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package userDao
 
 import (
-	"orderbento/src/dao"
-	"orderbento/src/models"
+	"rickyWeb/src/dao"
+	"rickyWeb/src/models"
 	"time"
 
 	"github.com/jinzhu/gorm"

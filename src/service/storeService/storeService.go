@@ -1,7 +1,7 @@
 package storeService
 
 import (
-	"orderbento/src/dao/storeDao"
+	"rickyWeb/src/dao/storeDao"
 )
 
 /* 查詢用戶名稱 */

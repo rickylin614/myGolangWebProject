@@ -3,8 +3,8 @@ package main
 import (
 	_ "github.com/go-sql-driver/mysql"
 
-	"orderbento/src/router"
-	"orderbento/src/server"
+	"rickyWeb/src/router"
+	"rickyWeb/src/server"
 )
 
 func main() {

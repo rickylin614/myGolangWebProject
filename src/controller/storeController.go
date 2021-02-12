@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"orderbento/src/dao/storeDao"
-	"orderbento/src/models"
-	"orderbento/src/service/storeService"
-	"orderbento/src/utils"
+	"rickyWeb/src/dao/storeDao"
+	"rickyWeb/src/models"
+	"rickyWeb/src/service/storeService"
+	"rickyWeb/src/utils"
 
 	"github.com/gin-gonic/gin"
 )

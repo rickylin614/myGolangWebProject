@@ -3,7 +3,6 @@
 # Golang Web專案
 
 - 採前後分離
-- 對應前端Vue : <https://github.com/ddalbert66/vue_order_bento>
 
 # 前端:
 	使用前端框架: vue.js(v2.5.2)
