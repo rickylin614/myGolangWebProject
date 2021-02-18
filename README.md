@@ -337,3 +337,98 @@ func OnlineMemberCheckTask() {
 
 - 聊天室簡易演示影片 <https://youtu.be/gJDfWJpQvNo>
 
+
+### 8. 設定檔設定
+
+- 設定檔方便統一管理常數、不同環境時所需要的不同設定。
+> /src/utils/viperUtils/config.go
+
+- 由於不同程序執行位置，判斷檔案相對路徑會不同(unit test時會變成當下執行路徑)，因此必須使用絕對路徑
+
+```
+// 根據此檔的路徑 配置靜態文件的相對路徑
+const basepath = "../../../resource/properties/"
+const commonFile = basepath + "common.properties"
+const logPathParam = "logPath"
+
+// 存入絕對路徑
+var currentBase string
+
+func init() {
+	_, currentFile, _, _ := runtime.Caller(0) // 取得此時本地檔案的絕對路徑
+	currentBase = filepath.Dir(currentFile) 
+}
+
+/* 此檔絕對路徑 與 靜態文件相對路徑 組合 靜態文件絕對路徑 */
+func AbsolutePath(rel string) string {
+	return filepath.Join(currentBase, rel)
+}
+
+/* 取得日誌文件路徑 */
+func GetLogPath() string {
+	path := AbsolutePath(commonFile) //取得設定檔絕對路徑
+	viper.SetConfigFile(path) // 存取設定檔
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	return viper.GetString(logPathParam) // 存取參數
+}
+```
+
+
+### 9.單元測試
+
+- 已登入為例，演示程式中重要的單元測試
+> /src/controller/userController_test.go TestLogin
+
+```
+func TestLogin(t *testing.T) {
+	w := httptest.NewRecorder()
+	ctx, _ := gin.CreateTestContext(w) // gin用於test的方法 做出ctx
+
+	tests := []struct {
+		msg    string // 測試說明
+		params gin.H  // 輸入引數
+		errMsg string // 錯誤資訊
+		want   string // 期望結果
+	}{
+		{
+			msg: "測試1",
+			params: gin.H{
+				"Name":     "ricky001",
+				"Password": "qwe123",
+			},
+			want: `{"code":200,"msg":"登入成功"}`,
+		},
+		{
+			msg: "測試2",
+			params: gin.H{
+				"Name":     "ricky001",
+				"Password": "qwe12",
+			},
+			want: `{"code":"error","msg":"密碼錯誤"}`,
+		},
+		{
+			msg: "測試3",
+			params: gin.H{
+				"Name":     "",
+				"Password": "",
+			},
+			want: `{"code":"error","msg":"資料格式不正確"}`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.msg, func(t *testing.T) {
+			data, _ := json.Marshal(tt.params)                                    // 將參數轉為json格式(byte)
+			ctx.Request = httptest.NewRequest("POST", "/", bytes.NewBuffer(data)) // 設定請求參數
+			ctx.Request.Header.Set("Content-Type", gin.MIMEJSON)                  // 設定Content-type為json
+			Login(ctx)
+			if tt.want != w.Body.String() {
+				t.Errorf("error!! want: %s , get: %s", tt.want, w.Body.String())
+			}
+			w.Body = new(bytes.Buffer)
+		})
+	}
+}
+```

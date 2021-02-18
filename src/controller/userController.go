@@ -16,6 +16,7 @@ import (
 	"rickyWeb/src/utils/zapLog"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -50,11 +51,22 @@ func Register(ctx *gin.Context) {
 
 /* 登入 */
 func Login(ctx *gin.Context) {
+	defer func() {
+		if err := recover(); err != nil {
+			// validErr := err.(validator.ValidationErrors)
+			if _, ok := err.(validator.ValidationErrors); ok {
+				ctx.JSON(http.StatusOK, gin.H{
+					"msg":  "資料格式不正確",
+					"code": "error",
+				})
+			}
+		}
+	}()
+
 	var data userReq
 	err := ctx.Bind(&data)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	user := userService.QueryUserByName(data.Name)
 	if user.ID != 0 {
