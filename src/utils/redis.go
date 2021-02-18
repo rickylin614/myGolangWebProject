@@ -1,13 +1,17 @@
 package utils
 
-import "github.com/go-redis/redis"
+import (
+	"rickyWeb/src/utils/viperUtils"
+
+	"github.com/go-redis/redis"
+)
 
 var redisdb *redis.Client
 
 func init() {
 	//redis initial , setting can see redis.go opt.init()
 	redisdb = redis.NewClient(&redis.Options{ //return Client
-		Addr:     "127.0.0.1:6379",
+		Addr:     viperUtils.GetCommonParams("redisPath"),
 		Password: "",
 		DB:       0,
 	})
