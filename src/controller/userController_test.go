@@ -70,6 +70,14 @@ func TestLogin(t *testing.T) {
 		{
 			msg: "測試3",
 			params: gin.H{
+				"Name":     "rrrrrrr",
+				"Password": "qwe",
+			},
+			want: `{"code":"error","msg":"查無使用者帳號"}`,
+		},
+		{
+			msg: "測試4",
+			params: gin.H{
 				"Name":     "",
 				"Password": "",
 			},
