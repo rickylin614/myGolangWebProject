@@ -65,7 +65,7 @@ func Common(ctx *gin.Context) {
 	strT := strconv.FormatInt(t, 10) + "ms"
 	if t == 0 {
 		t := time.Since(start).Microseconds()
-		strT = strconv.FormatInt(t, 10) + "ns"
+		strT = strconv.FormatInt(t, 10) + "us"
 	}
 
 	zapLog.WriteLogInfo(
