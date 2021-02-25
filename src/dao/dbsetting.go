@@ -36,6 +36,7 @@ func SetLogFile(out *os.File) {
 	db.SetLogger(logger)
 }
 
+// 避免任何程序對初始化後的DB做設定修改，連線後"只能"對db設定做"讀取"
 // return a clone db
 func GetDB() *gorm.DB {
 	db := db

@@ -53,13 +53,14 @@ func Register(ctx *gin.Context) {
 func Login(ctx *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
-			// validErr := err.(validator.ValidationErrors)
 			if _, ok := err.(validator.ValidationErrors); ok {
 				ctx.JSON(http.StatusOK, gin.H{
 					"msg":  "資料格式不正確",
 					"code": "error",
 				})
 			}
+		} else {
+			panic(err)
 		}
 	}()
 

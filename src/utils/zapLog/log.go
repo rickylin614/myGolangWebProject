@@ -112,8 +112,4 @@ func WriteLogFatal(msg string, fields ...zap.Field) {
 /* flushing any buffered log */
 func sync() {
 	_ = logger.Sync()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	panic(err)
-	// }
 }

@@ -23,13 +23,13 @@ func GinInit() *gin.Engine {
 		dao.SetLogFile(file)                          //設定gorm日誌輸出
 	}
 
-	router := gin.Default()
+	router := gin.New()
 	router.NoRoute(controller.NoSetting)
 	router.NoMethod(controller.NoSetting)
 
 	//中間件設定
 	{
-		router.Use(middleware.Common)     //登入中間件
+		router.Use(middleware.Common)     //基本中間件
 		router.Use(middleware.LoginCheck) //登入中間件
 	}
 	return router

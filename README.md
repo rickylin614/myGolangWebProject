@@ -440,3 +440,47 @@ func TestLogin(t *testing.T) {
 	}
 }
 ```
+
+### 10. 錯誤日誌紀錄
+
+- 在中間件中添加錯誤攔截，
+> /src/middleware/commone.go Common
+
+```
+...
+defer func() {
+	if err := recover(); err != nil {
+		userName := "unknown"
+		userId := uint(0)
+		if value, exist := ctx.Get("user"); exist {
+			if user, ok := value.(models.User); ok {
+				userName = user.Name
+				userId = user.ID
+			}
+		}
+		if e, ok := err.(error); ok {
+			zapLog.WriteLogError("error! ", zap.String("user:", userName), zap.Error(e)) //將錯誤訊息記錄到log文件
+			errChan <- ErrorData{                                                        //將錯誤訊息透過channel紀錄到DB 方便查詢
+				request:  *ctx.Request,
+				userName: userName,
+				userId:   userId,
+				errmsg:   e.Error(),
+			}
+		}
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"msg":  "請求發生錯誤! 請稍後重新再試",
+			"code": "error",
+		})
+	}
+}()
+...
+//將接受到的錯誤訊息寫入DB
+func errChanWorker() {
+	for {
+		data := <-errChan
+		errRecordService.Insert(&data.request, data.userId, data.userName, data.errmsg)
+	}
+}
+
+
+```

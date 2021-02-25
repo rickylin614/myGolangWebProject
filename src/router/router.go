@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"rickyWeb/src/controller"
 	"rickyWeb/src/controller/imCtrl"
 
@@ -36,11 +35,6 @@ func RouterSetting(router *gin.Engine) {
 		storeGroup.POST("/queryStoreById", controller.QueryStoreById)
 		storeGroup.POST("/queryStore", controller.QueryStore)
 
-	}
-
-	menuGroup := mainRouter.Group("/menu")
-	{ //set menu handler here
-		fmt.Println(menuGroup)
 	}
 
 }

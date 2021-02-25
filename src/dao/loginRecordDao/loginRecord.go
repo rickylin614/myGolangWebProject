@@ -23,7 +23,8 @@ func Insert(r *LoginRecord) {
 
 func Query(pageNo, pageSize int, data map[string]interface{}) []LoginRecord {
 	records := []LoginRecord{}
-	db().Find(&records, data)
+	offset := (pageNo - 1) * pageSize
+	db().Offset(offset).Limit(pageSize).Find(&records, data)
 	return records
 }
 
